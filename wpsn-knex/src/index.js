@@ -83,6 +83,28 @@ app.post('/logout', (req,res) => {
     })
 })
 */
+app.post('/url_entry', authMiddleware ,urlencodedMiddleware, (req,res) => {
+  const long_url = req.body.long_url
+  //데이터 저장
+  query.createUrlEntry(long_url, req.user.id)
+  .then(()=>{
+    res.redirect('/')
+  })
+})
+
+app.get('/:id', (req,res, next) => {
+  query.getUrlById(req.params.id)
+  .then(entry => {
+    if(entry){
+      res.redirect(entry.long_url)
+      //redirect 상태코드 : 301 : moved permanatly : 넌 영원히 이동했다!!//다음행동을 하지 않는다. //url 쇼트너에는 301이 좋다
+      // 302: 브라우저에 저장을 안하고 다음 행동을 한다.
+    }else{
+      next()
+    }
+  })
+})
+
 app.listen(3000, () => {
   console.log('listening...')
 })
