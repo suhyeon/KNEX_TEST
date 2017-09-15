@@ -119,6 +119,18 @@ app.get('/:id', (req,res, next) => {
 //}
 
 //stress(1000)
+app.get('/register', (req, res) => {
+  res.render('register.ejs')
+})
+
+app.post('/register',urlencodedMiddleware, (req, res) => {
+  query.createUser(req.body.id, req.body.password)
+    .then(() => {
+      // 로그인
+      req.session.id = req.body.id
+      res.redirect('/')
+    })
+})
 app.listen(3000, () => {
   console.log('listening...')
 })

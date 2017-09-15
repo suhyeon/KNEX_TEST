@@ -43,11 +43,17 @@ function incrementClickCountById(id){
   .where(id)
   .increment('click_count',1)//atomic update : database는 처리를 견뎌낼 수 있다.
 }
+function createUser(id, password) {
+  return knex('user')
+    .insert({id, password})
+}
+
 module.exports = {
   getUserById,
   getEntryByUserId,
   getUser,
   createUrlEntry,
   getUrlById,
-  incrementClickCountById
+  incrementClickCountById,
+  createUser
 }
