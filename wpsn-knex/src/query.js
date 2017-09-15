@@ -33,10 +33,21 @@ function getUrlById(id){
   .where({id})
   .first()
 }
+/*function saveClickCountById(id, click_count){
+  return knex('url_entry')
+  .where({id})
+  .update({click_count})
+}*/
+function incrementClickCountById(id){
+  return knex('url_entry')
+  .where(id)
+  .increment('click_count',1)//atomic update : database는 처리를 견뎌낼 수 있다.
+}
 module.exports = {
   getUserById,
   getEntryByUserId,
   getUser,
   createUrlEntry,
-  getUrlById
+  getUrlById,
+  incrementClickCountById
 }

@@ -96,7 +96,11 @@ app.get('/:id', (req,res, next) => {
   query.getUrlById(req.params.id)
   .then(entry => {
     if(entry){
-      res.redirect(entry.long_url)
+     // query.saveClickCountById(entry.id, entry.click_count +1)//데이터베이스 동시성 문제
+     query.incrementClickCountById(entry.id)
+      .then(()=>{
+        res.redirect(entry.long_url)
+      })
       //redirect 상태코드 : 301 : moved permanatly : 넌 영원히 이동했다!!//다음행동을 하지 않는다. //url 쇼트너에는 301이 좋다
       // 302: 브라우저에 저장을 안하고 다음 행동을 한다.
     }else{
@@ -104,7 +108,17 @@ app.get('/:id', (req,res, next) => {
     }
   })
 })
+//1000번의 같은 주소에 스트레스를 주는 테스트 코드
+//const axios = require('axios')
 
+//function stress(count) {
+//  if (count > 0) {
+//    axios.get('http://localhost:3000/3gWjFV6g')
+//    setTimeout(() => stress(count - 1))
+//  }
+//}
+
+//stress(1000)
 app.listen(3000, () => {
   console.log('listening...')
 })
