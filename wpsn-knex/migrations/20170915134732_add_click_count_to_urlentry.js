@@ -7,6 +7,6 @@ exports.up = function(knex, Promise) {
 
 exports.down = function(knex, Promise) {
   return knex.schema.table('url_entry', t=>{
-    t.dropCilmn('click_count')
+    t.dropClomn('click_count')
   })
 };

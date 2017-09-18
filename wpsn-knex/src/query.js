@@ -1,5 +1,6 @@
 const knex = require('./knex')
 const randomstring = require('randomstring')
+const validator = require('validator')
 function getUserById(id){
   return knex('user')
   .where({id})
@@ -20,13 +21,16 @@ function getUser(id, password){
   })
 }
 function createUrlEntry(long_url,user_id){
-  const id = randomstring.generate(8)
-  return knex('url_entry')
-  .insert({
-    id,
-    long_url,
-    user_id
-  })
+ const valid = validator.isURL(long_url)
+ if(!valid){
+   return Promise.reject(new Error('url is uncorrect'))
+ } const id = randomstring.generate(8)
+ return knex('url_entry')
+ .insert({
+   id,
+   long_url,
+   user_id
+ })
 }
 function getUrlById(id){
   return knex('url_entry')
